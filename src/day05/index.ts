@@ -55,8 +55,8 @@ const part1 = (rawInput: string) => {
 };
 
 const approach = (position: Coord, target: Coord): Coord => ({
-  x: position.x + Math.sign(target.x - position.x) * 1,
-  y: position.y + Math.sign(target.y - position.y) * 1,
+  x: position.x + Math.sign(target.x - position.x),
+  y: position.y + Math.sign(target.y - position.y),
 });
 
 const equal = (a: Coord, b: Coord): boolean => a.x == b.x && a.y == b.y;
