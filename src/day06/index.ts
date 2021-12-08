@@ -1,10 +1,13 @@
-import run from "aocrunner";
+import run from 'aocrunner';
 
 const parseInput = (rawInput: string): number[] =>
-  rawInput.split(/\,/).map((n) => +n).reduce((ages, age) => {
-    ages[age] += 1;
-    return ages;
-  }, Array(9).fill(0));
+  rawInput
+    .split(/\,/)
+    .map((n) => +n)
+    .reduce((ages, age) => {
+      ages[age] += 1;
+      return ages;
+    }, Array(9).fill(0));
 
 const part1 = (rawInput: string) => {
   const ages = parseInput(rawInput);

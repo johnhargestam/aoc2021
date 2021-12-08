@@ -1,4 +1,4 @@
-import run from "aocrunner";
+import run from 'aocrunner';
 
 const parseInput = (rawInput: string) => rawInput;
 
@@ -28,4 +28,5 @@ run({
     solution: part2,
   },
   trimTestInputs: true,
+  onlyTests: false,
 });

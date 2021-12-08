@@ -1,4 +1,4 @@
-import run from "aocrunner";
+import run from 'aocrunner';
 
 const parseInput = (rawInput: string) => rawInput.split(/\s*?\n\s*?/);
 
@@ -24,11 +24,11 @@ const part1 = (rawInput: string) => {
     return sums;
   }, []);
   const gamma = result
-    .map(({ ones, zeros }) => (ones > zeros ? "1" : "0"))
-    .join("");
+    .map(({ ones, zeros }) => (ones > zeros ? '1' : '0'))
+    .join('');
   const epsilon = result
-    .map(({ ones, zeros }) => (ones < zeros ? "1" : "0"))
-    .join("");
+    .map(({ ones, zeros }) => (ones < zeros ? '1' : '0'))
+    .join('');
 
   return parseInt(gamma, 2) * parseInt(epsilon, 2);
 };
@@ -43,7 +43,7 @@ const part2 = (rawInput: string) => {
     for (const binary of oxygenBinaries) {
       ones += +binary[i];
     }
-    const mostCommon = ones >= oxygenBinaries.length / 2 ? "1" : "0";
+    const mostCommon = ones >= oxygenBinaries.length / 2 ? '1' : '0';
     oxygenBinaries = oxygenBinaries.filter(
       (binary) => binary[i] === mostCommon,
     );
@@ -58,7 +58,7 @@ const part2 = (rawInput: string) => {
     for (const binary of co2Binaries) {
       ones += +binary[i];
     }
-    const leastCommon = ones >= co2Binaries.length / 2 ? "0" : "1";
+    const leastCommon = ones >= co2Binaries.length / 2 ? '0' : '1';
     co2Binaries = co2Binaries.filter((binary) => binary[i] === leastCommon);
     if (co2Binaries.length === 1) {
       break;
