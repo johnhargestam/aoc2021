@@ -54,75 +54,60 @@ const segmentDigits = {
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
 
-  return input.map(({ patterns }) => {
+  const results = input.map(({ patterns, output }) => {
     const wiring: { [key: string]: string } = {};
+    const key: string[][] = [];
 
-    const one = patterns.filter((p) => p.length === 2)[0];
-    const seven = patterns.filter((p) => p.length === 3)[0];
-    const four = patterns.filter((p) => p.length === 4)[0];
-    const eight = patterns.filter((p) => p.length === 7)[0];
+    key[1] = patterns.filter((p) => p.length === 2)[0];
+    key[7] = patterns.filter((p) => p.length === 3)[0];
+    key[4] = patterns.filter((p) => p.length === 4)[0];
+    key[8] = patterns.filter((p) => p.length === 7)[0];
 
-    wiring['a'] = seven.filter((c) => one.indexOf(c) === -1)[0];
+    wiring['a'] = key[7].filter((c) => key[1].indexOf(c) === -1)[0];
 
     wiring['g'] = patterns
       .filter((pattern) => pattern.length === 6)
-      .filter((p) => four.concat(wiring['a']).every((c) => p.includes(c)))[0]
-      .filter((c) => four.concat(wiring['a']).indexOf(c) === -1)[0];
+      .filter((p) => key[4].concat(wiring['a']).every((c) => p.includes(c)))[0]
+      .filter((c) => key[4].concat(wiring['a']).indexOf(c) === -1)[0];
 
-    wiring['e'] = eight.filter(
-      (c) => four.concat(wiring['a']).concat(wiring['g']).indexOf(c) === -1,
+    wiring['e'] = key[8].filter(
+      (c) => key[4].concat(wiring['a']).concat(wiring['g']).indexOf(c) === -1,
     )[0];
 
-    const nine = four.concat(wiring['a']).concat(wiring['g']);
+    key[9] = key[4].concat(wiring['a']).concat(wiring['g']);
 
-    const three = patterns
+    key[3] = patterns
       .filter((p) => p.length === 5)
-      .filter((p) => one.every((c) => p.includes(c)))[0];
+      .filter((p) => key[1].every((c) => p.includes(c)))[0];
 
-    wiring['d'] = three.filter(
-      (c) => one.concat(wiring['a']).concat(wiring['g']).indexOf(c) === -1,
+    wiring['d'] = key[3].filter(
+      (c) => key[1].concat(wiring['a']).concat(wiring['g']).indexOf(c) === -1,
     )[0];
 
-    const zero = eight.filter((c) => c !== wiring['d']);
+    key[0] = key[8].filter((c) => c !== wiring['d']);
 
-    const six = patterns
+    key[6] = patterns
       .filter((p) => p.length === 6)
-      .filter((p) => !p.every((c) => zero.includes(c)))
-      .filter((p) => !p.every((c) => nine.includes(c)))[0];
+      .filter((p) => !p.every((c) => key[0].includes(c)))
+      .filter((p) => !p.every((c) => key[9].includes(c)))[0];
 
-    const two = patterns
+    key[2] = patterns
       .filter((p) => p.length === 5)
       .filter((p) => p.includes(wiring['e']))[0];
 
-    const five = patterns
+    key[5] = patterns
       .filter((p) => p.length === 5)
-      .filter((p) => !p.every((c) => two.includes(c)))
-      .filter((p) => !p.every((c) => three.includes(c)))[0];
+      .filter((p) => !p.every((c) => key[2].includes(c)))
+      .filter((p) => !p.every((c) => key[3].includes(c)))[0];
 
-    zero.sort();
-    one.sort();
-    two.sort();
-    three.sort();
-    four.sort();
-    five.sort();
-    six.sort();
-    seven.sort();
-    eight.sort();
-    nine.sort();
+    key.forEach((p) => p.sort());
 
-    console.log(eight);
-    console.log(five);
-    console.log(two);
-    console.log(three);
-    console.log(seven);
-    console.log(nine);
-    console.log(six);
-    console.log(four);
-    console.log(zero);
-    console.log(one);
-
-    return wiring;
+    return +output.map((value) => {
+      value.sort();
+      return key.map((p) => p.join('')).indexOf(value.join(''));
+    }).join('');
   });
+  return results.reduce((total, result) => total + result, 0);
 };
 
 run({
@@ -139,18 +124,11 @@ run({
     tests: [
       {
         input: `acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf`,
-        expected: [
-          {
-            a: 'd',
-            g: 'c',
-            e: 'g',
-            d: 'f',
-          },
-        ] as unknown as string,
+        expected: 5353,
       },
     ],
-    solution: part2 as unknown as (input: string) => string,
+    solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: true,
+  onlyTests: false,
 });
