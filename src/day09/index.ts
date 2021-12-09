@@ -32,22 +32,30 @@ interface Node {
   visited: boolean;
 }
 
-const fill = (map: Node[][], col: number, row: number, previous?: number) => {
+const fill = (
+  map: Node[][],
+  col: number,
+  row: number,
+  previousHeight?: number,
+): number => {
   const node = map[col]?.[row];
   if (
     node === undefined ||
     node.visited ||
     node.height > 8 ||
-    (previous !== undefined && node.height < previous)
+    node.height < previousHeight!
   ) {
-    return;
+    return 0;
   }
   node.visited = true;
 
-  fill(map, col - 1, row, node.height);
-  fill(map, col, row + 1, node.height);
-  fill(map, col + 1, row, node.height);
-  fill(map, col, row - 1, node.height);
+  return (
+    fill(map, col - 1, row, node.height) +
+    fill(map, col, row + 1, node.height) +
+    fill(map, col + 1, row, node.height) +
+    fill(map, col, row - 1, node.height) +
+    1
+  );
 };
 
 const part2 = (rawInput: string) => {
@@ -55,17 +63,11 @@ const part2 = (rawInput: string) => {
   const basinSizes: number[] = [];
 
   for (const [col, line] of input.entries()) {
-    for (const [row, height] of line.entries()) {
+    for (const [row] of line.entries()) {
       const map = input.map((line) =>
         line.map((height) => ({ height, visited: false })),
       );
-      fill(map, col, row);
-
-      const size = map.reduce(
-        (total, line) =>
-          total + line.reduce((subtotal, node) => subtotal + +node.visited, 0),
-        0,
-      );
+      const size = fill(map, col, row);
       basinSizes.push(size);
     }
   }
