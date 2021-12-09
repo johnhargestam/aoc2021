@@ -102,10 +102,12 @@ const part2 = (rawInput: string) => {
 
     key.forEach((p) => p.sort());
 
-    return +output.map((value) => {
-      value.sort();
-      return key.map((p) => p.join('')).indexOf(value.join(''));
-    }).join('');
+    return +output
+      .map((value) => {
+        value.sort();
+        return key.map((p) => p.join('')).indexOf(value.join(''));
+      })
+      .join('');
   });
   return results.reduce((total, result) => total + result, 0);
 };
