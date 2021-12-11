@@ -19,17 +19,17 @@ run({
     tests: [
       {
         input: ``,
-        expected: 0
+        expected: 0,
       },
     ],
     solution: part1,
   },
   part2: {
     tests: [
-      {
-        input: ``,
-        expected: 0
-      },
+      // {
+      //   input: ``,
+      //   expected: 0
+      // },
     ],
     solution: part2,
   },
