@@ -55,7 +55,7 @@ anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-aocrunner@^1.5.0:
+aocrunner@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aocrunner/-/aocrunner-1.6.0.tgz#b331c23c8638fa30536cd36ca768fd169e79ba19"
   integrity sha512-MYTLujWheTeIrreKlH0V5zXgHKbYD9nc0GSciTSUJ7akDBx1xGzIWWGs0XnY20O1q2+b2b05QVvgJ4QTY0CbkQ==
@@ -640,9 +640,9 @@ type-check@~0.3.2:
     prelude-ls "~1.1.2"
 
 typescript@^4.4.4:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.2.tgz#8ac1fba9f52256fdb06fb89e4122fa6a346c2998"
-  integrity sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.3.tgz#afaa858e68c7103317d89eb90c5d8906268d353c"
+  integrity sha512-eVYaEHALSt+s9LbvgEv4Ef+Tdq7hBiIZgii12xXJnukryt3pMgJf6aKhoCZ3FWQsu6sydEnkg11fYXLzhLBjeQ==
 
 universalify@^0.1.2:
   version "0.1.2"
