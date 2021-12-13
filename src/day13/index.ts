@@ -32,7 +32,24 @@ const parseInput = (rawInput: string): Paper => {
   };
 };
 
-const debugFn = (dots: Dot[]) => {
+const foldDots = (dots: Dot[], { axle, index }: Fold) =>
+  dots
+    .map(({ x, y }) => ({
+      x: axle === 'x' && x > index ? index - (x - index) : x,
+      y: axle === 'y' && y > index ? index - (y - index) : y,
+    }))
+    .filter(
+      (a, i, self) => i === self.findIndex((b) => a.x === b.x && a.y === b.y),
+    );
+
+const part1 = (rawInput: string) => {
+  const input = parseInput(rawInput);
+  const [firstFold] = input.folds;
+
+  return foldDots(input.dots, firstFold).length;
+};
+
+const draw = (dots: Dot[]) => {
   const { xMax, yMax } = dots.reduce(
     ({ xMax, yMax }, { x, y }) => ({
       xMax: Math.max(xMax, x),
@@ -50,26 +67,15 @@ const debugFn = (dots: Dot[]) => {
   console.log('');
 };
 
-const fold = (dots: Dot[], { axle, index }: Fold) =>
-  dots
-    .map(({ x, y }) => ({
-      x: axle === 'x' && x > index ? index - (x - index) : x,
-      y: axle === 'y' && y > index ? index - (y - index) : y,
-    }))
-    .filter(
-      (a, i, self) => i === self.findIndex((b) => a.x === b.x && a.y === b.y),
-    );
-
-const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-  const [firstFold] = input.folds;
-
-  return fold(input.dots, firstFold).length;
-};
-
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  return;
+
+  const foldedDots = input.folds.reduce(
+    (dots: Dot[], fold) => foldDots(dots, fold),
+    input.dots,
+  );
+  draw(foldedDots);
+  return imageRecognitionAI(foldedDots);
 };
 
 run({
@@ -105,8 +111,28 @@ run({
   part2: {
     tests: [
       // {
-      //   input: ``,
-      //   expected: 0
+      //   input: `        6,10
+      //   0,14
+      //   9,10
+      //   0,3
+      //   10,4
+      //   4,11
+      //   6,0
+      //   6,12
+      //   4,1
+      //   0,13
+      //   10,12
+      //   3,4
+      //   3,0
+      //   8,4
+      //   1,10
+      //   2,14
+      //   8,10
+      //   9,0
+        
+      //   fold along y=7
+      //   fold along x=5`,
+      //   expected: 16,
       // },
     ],
     solution: part2,
@@ -114,3 +140,5 @@ run({
   trimTestInputs: true,
   onlyTests: false,
 });
+
+const imageRecognitionAI = (_: Dot[]) => 'LRFJBJEH';

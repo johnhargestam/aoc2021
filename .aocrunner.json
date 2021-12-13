@@ -180,13 +180,13 @@
         "solved": true,
         "result": "706",
         "attempts": [],
-        "time": 4.0388
+        "time": 4.0492
       },
       "part2": {
-        "solved": false,
-        "result": null,
+        "solved": true,
+        "result": "LRFJBJEH",
         "attempts": [],
-        "time": null
+        "time": 10.6513
       }
     },
     {
