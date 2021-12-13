@@ -15,32 +15,60 @@ interface Paper {
   folds: Fold[];
 }
 
-const parseInput = (rawInput: string) => {
+const parseInput = (rawInput: string): Paper => {
   const [coords, instructions] = rawInput.split(/\n\n/);
   return {
     dots: coords
       .split(/\n/)
       .map((coord) => coord.split(/,/).map((n) => +n))
       .map(([x, y]) => ({ x, y })),
-    folds: instructions.split(/\n/).map(instruction => {
+    folds: instructions.split(/\n/).map((instruction) => {
       const [text, value] = instruction.split(/=/);
-      return ({
-        axle: text.slice(-1),
+      return {
+        axle: text.slice(-1) as 'x' | 'y',
         index: +value,
-      }) 
+      };
     }),
   };
 };
 
+const debugFn = (dots: Dot[]) => {
+  const { xMax, yMax } = dots.reduce(
+    ({ xMax, yMax }, { x, y }) => ({
+      xMax: Math.max(xMax, x),
+      yMax: Math.max(yMax, y),
+    }),
+    { xMax: -1, yMax: -1 },
+  );
+  const drawing: string[][] = Array.from({ length: yMax + 1 }, () =>
+    Array(xMax).fill('.'),
+  );
+  dots.forEach(({ x, y }) => {
+    drawing[y][x] = '#';
+  });
+  console.log(drawing.map((row) => row.join('')).join('\n'));
+  console.log('');
+};
+
+const fold = (dots: Dot[], { axle, index }: Fold) =>
+  dots
+    .map(({ x, y }) => ({
+      x: axle === 'x' && x > index ? index - (x - index) : x,
+      y: axle === 'y' && y > index ? index - (y - index) : y,
+    }))
+    .filter(
+      (a, i, self) => i === self.findIndex((b) => a.x === b.x && a.y === b.y),
+    );
+
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
+  const [firstFold] = input.folds;
 
-  return input;
+  return fold(input.dots, firstFold).length;
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
-
   return;
 };
 
@@ -69,7 +97,7 @@ run({
         
         fold along y=7
         fold along x=5`,
-        expected: 0,
+        expected: 17,
       },
     ],
     solution: part1,
@@ -84,5 +112,5 @@ run({
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: true,
+  onlyTests: false,
 });
