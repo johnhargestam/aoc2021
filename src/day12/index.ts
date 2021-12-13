@@ -28,7 +28,7 @@ const typeOfName = (name: string): Type => {
   return Type.BIG;
 };
 
-const parseInput = (rawInput: string): Connection[] => 
+const parseInput = (rawInput: string): Connection[] =>
   rawInput.split(/\n(?:\s+)?/).map(
     (connection) =>
       connection.split(/-/).map((name) => ({
@@ -65,15 +65,14 @@ const part1 = (rawInput: string) => {
   return explore(input, [{ name: 'start', type: Type.START }]);
 };
 
-const canVisit2 = (cave: Cave): boolean =>
-  cave.type !== Type.START;
+const canVisit2 = (cave: Cave): boolean => cave.type !== Type.START;
 
 const exceededVisits = (pastCaves: Cave[]): boolean => {
   const smallCaves = pastCaves
     .filter((c) => c.type === Type.SMALL)
     .map((c) => c.name);
   return new Set(smallCaves).size + 1 < smallCaves.length;
-}
+};
 
 const explore2 = (connections: Connection[], pastCaves: Cave[]) => {
   const [position] = pastCaves.slice(-1);
