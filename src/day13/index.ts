@@ -129,7 +129,6 @@ run({
       //   2,14
       //   8,10
       //   9,0
-        
       //   fold along y=7
       //   fold along x=5`,
       //   expected: 16,
