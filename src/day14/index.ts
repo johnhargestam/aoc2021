@@ -4,10 +4,10 @@ const parseInput = (rawInput: string) => {
   const [template, rules] = rawInput.split(/\n\n/);
   return {
     template,
-    rules: rules.split(/\n/).map((rule) => {
+    rules: rules.split(/\n/).reduce((rules, rule) => {
       const [match, insert] = rule.split(/ -> /);
-      return { match, insert };
-    }),
+      return { ...rules, [match]: insert};
+    }, {}),
   };
 };
 
@@ -15,28 +15,22 @@ interface Letters {
   [letter: string]: number;
 }
 
-interface Rule {
-  match: string;
-  insert: string;
+interface Rules {
+  [match: string]: string;
 }
 
 const polymerize = (
   letters: Letters,
   pair: string,
-  rules: Rule[],
+  rules: Rules,
   times: number,
 ) => {
   if (times <= 0) {
     return;
   }
-  for (const { match, insert } of rules) {
-    if (match === pair) {
-      letters[insert] = 1 + (letters[insert] || 0);
-      polymerize(letters, `${pair.at(0)}${insert}`, rules, times - 1);
-      polymerize(letters, `${insert}${pair.at(1)}`, rules, times - 1);
-      return;
-    }
-  }
+  letters[rules[pair]] = 1 + (letters[rules[pair]] || 0);
+  polymerize(letters, `${pair.at(0)}${rules[pair]}`, rules, times - 1);
+  polymerize(letters, `${rules[pair]}${pair.at(1)}`, rules, times - 1);
 };
 
 const part1 = (rawInput: string) => {
@@ -46,7 +40,7 @@ const part1 = (rawInput: string) => {
     letters[c] = 1 + (letters[c] || 0);
     return letters;
   }, {});
-  for (let c = 0; c < template.length + 1; c++) {
+  for (let c = 0; c < template.length - 1; c++) {
     const pair = template.slice(c, c + 2);
     polymerize(letters, pair, rules, 10);
   }
